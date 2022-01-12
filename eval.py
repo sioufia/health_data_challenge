@@ -84,7 +84,7 @@ class Evaluator:
         f1_assertion = self.evaluate_assertion()
         print("\n\n############# RELATION EVALUATION #############")
         f1_rel = self.evaluate_relation()
-        global_score = (f1_concept + f1_concept + f1_rel) / 3
+        global_score = (f1_concept + f1_assertion + f1_rel) / 3
         print("\n\n############# GLOBAL SCORE #############")
         print(round(global_score, 2))
 
@@ -92,20 +92,20 @@ class Evaluator:
         y_true, y_pred = self._load_entities(TASK_CONCEPT)
         sorted_labels = [label for label, _ in sorted(Counter(y_true).items(), key=lambda c: (c[0] != O_TOKEN, -c[1]))]
         print("## Confusion matrix for concepts ##")
-        print(confusion_matrix(y_true, y_pred, sorted_labels))
+        print(confusion_matrix(y_true, y_pred, labels=sorted_labels))
         print("\n## Classification report for concepts ##")
-        print(classification_report(y_true, y_pred, sorted_labels))
-        class_report = classification_report(y_true, y_pred, sorted_labels, output_dict=True)
+        print(classification_report(y_true, y_pred, labels=sorted_labels))
+        class_report = classification_report(y_true, y_pred, labels=sorted_labels, output_dict=True)
         return class_report["macro avg"]["f1-score"]
 
     def evaluate_assertion(self) -> float:
         y_true, y_pred = self._load_entities(TASK_ASSERTION)
         sorted_labels = [label for label, _ in sorted(Counter(y_true).items(), key=lambda c: (c[0] != O_TOKEN, -c[1]))]
         print("## Confusion matrix for assertions ##")
-        print(confusion_matrix(y_true, y_pred, sorted_labels))
+        print(confusion_matrix(y_true, y_pred, labels=sorted_labels))
         print("\n## Classification report for assertions ##")
-        print(classification_report(y_true, y_pred, sorted_labels))
-        class_report = classification_report(y_true, y_pred, sorted_labels, output_dict=True)
+        print(classification_report(y_true, y_pred, labels=sorted_labels))
+        class_report = classification_report(y_true, y_pred, labels=sorted_labels, output_dict=True)
         return class_report["macro avg"]["f1-score"]
 
     def evaluate_relation(self) -> float:
