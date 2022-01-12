@@ -1,2 +1,5 @@
-scikit-learn>=0.21,<0.22
-fire==0.4.0
+black==21.12b0
+isort==5.10.1
+pre-commit==2.16.0
+pylint==2.12.2
+flake8==4.0.1
