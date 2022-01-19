@@ -57,18 +57,28 @@ class EntityAnnotationForRelation:
     start_word: int
     end_word: int
 
-    
+
 @dataclass
 class RelationAnnotation:
     label: RelationValue
     left_entity: EntityAnnotationForRelation
     right_entity: EntityAnnotationForRelation
-    
+
 
 class Evaluator:
-    def __init__(self, concept_annotation_dir: str, concept_prediction_dir: str,
-                 assertion_annotation_dir: str, assertion_prediction_dir: str, relation_annotation_dir:str,
+    def __init__(self):
+        self.concept_annotation_dir = None
+        self.concept_prediction_dir = None
+        self.assertion_annotation_dir = None
+        self.assertion_prediction_dir = None
+        self.relation_annotation_dir = None
+        self.relation_prediction_dir = None
+        self.entries_dir = None
+
+    def evaluate(self, concept_annotation_dir: str, concept_prediction_dir: str,
+                 assertion_annotation_dir: str, assertion_prediction_dir: str, relation_annotation_dir: str,
                  relation_prediction_dir: str, entries_dir: str):
+
         self.concept_annotation_dir = concept_annotation_dir
         self.concept_prediction_dir = concept_prediction_dir
         self.assertion_annotation_dir = assertion_annotation_dir
@@ -77,7 +87,6 @@ class Evaluator:
         self.relation_prediction_dir = relation_prediction_dir
         self.entries_dir = entries_dir
 
-    def evaluate(self):
         print("############# CONCEPT EVALUATION #############")
         f1_concept = self.evaluate_concept()
         print("\n\n############# ASSERTION EVALUATION #############")
@@ -202,7 +211,7 @@ class Evaluator:
                     entity_annotation = self._parse_assertion_annotation(entity_line)
                 else:
                     raise NotImplementedError(f"Parsing of task {task} not implemented")
-                
+
                 if entity_annotation is not None:
                     entities_annotated.append(entity_annotation)
                 else:
@@ -218,7 +227,7 @@ class Evaluator:
                     Token(label=O_TOKEN, text=word, line=i, word_index=index) for index, word in enumerate(line.split(" "))
                 ])
         return tokens
-    
+
     @staticmethod
     def _parse_relation_annotation(text: str) -> Optional[RelationAnnotation]:
         try:
